@@ -27,12 +27,12 @@ CG_INLINE CGFLOAT_TYPE JTSImageFloatAbs(CGFLOAT_TYPE aFloat) {
 // Public Constants
 CGFloat const JTSImageViewController_DefaultAlphaForBackgroundDimmingOverlay = 0.66f;
 CGFloat const JTSImageViewController_DefaultBackgroundBlurRadius = 2.0f;
+CGFloat const JTSImageViewController_DefaultTransitionAnimationDuration = 0.3f;
 
 // Private Constants
 static CGFloat const JTSImageViewController_MinimumBackgroundScaling = 0.94f;
 static CGFloat const JTSImageViewController_TargetZoomForDoubleTap = 3.0f;
 static CGFloat const JTSImageViewController_MaxScalingForExpandingOffscreenStyleTransition = 1.25f;
-static CGFloat const JTSImageViewController_TransitionAnimationDuration = 0.3f;
 static CGFloat const JTSImageViewController_MinimumFlickDismissalVelocity = 800.0f;
 
 typedef struct {
@@ -634,7 +634,7 @@ typedef struct {
             }
         }
         
-        CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+        CGFloat duration = self.transitionAnimationDuration;
         if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
             duration *= 4;
         }
@@ -779,7 +779,7 @@ typedef struct {
         CGFloat scaling = JTSImageViewController_MaxScalingForExpandingOffscreenStyleTransition;
         self.scrollView.transform = CGAffineTransformMakeScale(scaling, scaling);
         
-        CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+        CGFloat duration = self.transitionAnimationDuration;
         if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
             duration *= 4;
         }
@@ -889,7 +889,7 @@ typedef struct {
         CGFloat scaling = JTSImageViewController_MaxScalingForExpandingOffscreenStyleTransition;
         textViewSnapshot.transform = CGAffineTransformMakeScale(scaling, scaling);
         
-        CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+        CGFloat duration = self.transitionAnimationDuration;
         if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
             duration *= 4;
         }
@@ -996,6 +996,19 @@ typedef struct {
     return backgroundColor;
 }
 
+- (CGFloat)transitionAnimationDuration {
+
+    CGFloat animationDuration;
+
+    if ([self.optionsDelegate respondsToSelector:@selector(transitionAnimationDurationForImageViewer:)]) {
+        animationDuration = [self.optionsDelegate transitionAnimationDurationForImageViewer:self];
+    } else {
+        animationDuration = JTSImageViewController_DefaultTransitionAnimationDuration;
+    }
+
+    return animationDuration;
+}
+
 #pragma mark - Dismissal
 
 - (void)dismissByCollapsingImageBackToOriginalPosition {
@@ -1035,7 +1048,7 @@ typedef struct {
     dispatch_async(dispatch_get_main_queue(), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+            CGFloat duration = self.transitionAnimationDuration;
             if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
                 duration *= 4;
             }
@@ -1120,7 +1133,7 @@ typedef struct {
     
     __weak JTSImageViewController *weakSelf = self;
     
-    CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+    CGFloat duration = self.transitionAnimationDuration;
     if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
         duration *= 4;
     }
@@ -1163,7 +1176,7 @@ typedef struct {
     
     __weak JTSImageViewController *weakSelf = self;
     
-    CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+    CGFloat duration = self.transitionAnimationDuration;
     if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
         duration *= 4;
     }
@@ -1208,7 +1221,7 @@ typedef struct {
     
     __weak JTSImageViewController *weakSelf = self;
     
-    CGFloat duration = JTSImageViewController_TransitionAnimationDuration;
+    CGFloat duration = self.transitionAnimationDuration;
     if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
         duration *= 4;
     }

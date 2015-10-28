@@ -38,6 +38,7 @@ typedef NS_OPTIONS(NSInteger, JTSImageViewControllerBackgroundOptions) {
 
 extern CGFloat const JTSImageViewController_DefaultAlphaForBackgroundDimmingOverlay;
 extern CGFloat const JTSImageViewController_DefaultBackgroundBlurRadius;
+extern CGFloat const JTSImageViewController_DefaultTransitionAnimationDuration;
 
 ///--------------------------------------------------------------------------------------------------------------------
 /// JTSImageViewController
@@ -164,6 +165,11 @@ extern CGFloat const JTSImageViewController_DefaultBackgroundBlurRadius;
  scaled-down snapshot of the background view.
  */
 - (CGFloat)backgroundBlurRadiusForImageViewer:(JTSImageViewController *)imageViewer;
+
+/**
+ Defaults to 0.3
+ */
+- (CGFloat)transitionAnimationDurationForImageViewer:(JTSImageViewController *)imageViewer;
 
 @end
 
