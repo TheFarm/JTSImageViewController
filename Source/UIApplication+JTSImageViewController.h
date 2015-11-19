@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Riposte LLC. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @interface UIApplication (JTSImageViewController)
 
