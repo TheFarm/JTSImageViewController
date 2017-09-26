@@ -9,7 +9,7 @@
 #import "JTSImageInfo.h"
 
 @implementation JTSImageInfo
-
+@synthesize userInfo = _userInfo;
 
 - (NSString *)displayableTitleAltTextSummary {
     NSString *text = nil;
@@ -33,6 +33,10 @@
         }
     }
     return text;
+}
+
+- (void)setUserInfo:(NSMutableDictionary *)userInfo {
+    _userInfo = [userInfo mutableCopy];
 }
 
 - (NSMutableDictionary *)userInfo {

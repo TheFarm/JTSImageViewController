@@ -69,10 +69,10 @@ typedef struct {
 
 @interface JTSImageViewController ()
 <
-    UIScrollViewDelegate,
-    UITextViewDelegate,
-    UIViewControllerTransitioningDelegate,
-    UIGestureRecognizerDelegate
+UIScrollViewDelegate,
+UITextViewDelegate,
+UIViewControllerTransitioningDelegate,
+UIGestureRecognizerDelegate
 >
 
 // General Info
@@ -352,12 +352,12 @@ typedef struct {
     }
     /*
      viewWillTransitionToSize:withTransitionCoordinator: is not called when rotating from
-     one landscape orientation to the other (or from one portrait orientation to another). 
-     This makes it difficult to preserve the desired behavior of JTSImageViewController. 
-     We want the background snapshot to maintain the illusion that it never rotates. The 
-     only other way to ensure that the background snapshot stays in the correct orientation 
+     one landscape orientation to the other (or from one portrait orientation to another).
+     This makes it difficult to preserve the desired behavior of JTSImageViewController.
+     We want the background snapshot to maintain the illusion that it never rotates. The
+     only other way to ensure that the background snapshot stays in the correct orientation
      is to listen for this notification and respond when we've detected a landscape-to-landscape rotation.
-    */
+     */
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     BOOL landscapeToLandscape = UIDeviceOrientationIsLandscape(deviceOrientation) && UIInterfaceOrientationIsLandscape(self.lastUsedOrientation);
     BOOL portraitToPortrait = UIDeviceOrientationIsPortrait(deviceOrientation) && UIInterfaceOrientationIsPortrait(self.lastUsedOrientation);
@@ -429,6 +429,9 @@ typedef struct {
     self.blackBackdrop = [[UIView alloc] initWithFrame:CGRectInset(self.view.bounds, -512, -512)];
     self.blackBackdrop.backgroundColor = [UIColor blackColor];
     self.blackBackdrop.alpha = 0;
+    if (@available(iOS 11.0, *)) {
+        self.blackBackdrop.accessibilityIgnoresInvertColors = YES;
+    }
     [self.view addSubview:self.blackBackdrop];
     
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
@@ -451,6 +454,9 @@ typedef struct {
     self.imageView.isAccessibilityElement = NO;
     self.imageView.clipsToBounds = YES;
     self.imageView.layer.allowsEdgeAntialiasing = YES;
+    if (@available(iOS 11.0, *)) {
+        self.imageView.accessibilityIgnoresInvertColors = YES;
+    }
     if ([self.optionsDelegate respondsToSelector:@selector(imageViewerShouldFadeThumbnailsDuringPresentationAndDismissal:)]) {
         if ([self.optionsDelegate imageViewerShouldFadeThumbnailsDuringPresentationAndDismissal:self]) {
             self.imageView.alpha = 0;
@@ -498,6 +504,9 @@ typedef struct {
     self.blackBackdrop = [[UIView alloc] initWithFrame:CGRectInset(self.view.bounds, -512, -512)];
     self.blackBackdrop.backgroundColor = [UIColor blackColor];
     self.blackBackdrop.alpha = 0;
+    if (@available(iOS 11.0, *)) {
+        self.blackBackdrop.accessibilityIgnoresInvertColors = YES;
+    }
     [self.view addSubview:self.blackBackdrop];
     
     CGFloat outerMargin = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 80.0 : 40.0;
@@ -506,7 +515,9 @@ typedef struct {
     self.textView.delegate = self;
     self.textView.textColor = [UIColor whiteColor];
     self.textView.backgroundColor = [UIColor clearColor];
-    
+    if (@available(iOS 11.0, *)) {
+        self.textView.accessibilityIgnoresInvertColors = YES;
+    }
     UIFont *font = nil;
     if ([self.optionsDelegate respondsToSelector:@selector(fontForAltTextInImageViewer:)]) {
         font = [self.optionsDelegate fontForAltTextInImageViewer:self];
@@ -1970,6 +1981,3 @@ typedef struct {
 }
 
 @end
-
-
-
